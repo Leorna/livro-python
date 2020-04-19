@@ -17,20 +17,20 @@ def generate_options(quiz_file, answer_file, state, question_number):
     random.shuffle(options)
 
     for i in range(4):
-        option = "\n{}. {}".format("ABCD"[i], options[i])
+        option = f"\n{'ABCD'[i]}. {options[i]}"
         quiz_file.write(option)
 
     quiz_file.write("\n\n\n")
 
-    answer_file.write("{}. {}\n".format(question_number, "ABCD"[options.index(correct_option)]))
+    answer_file.write(f"{question_number}. {'ABCD'[options.index(correct_option)]}\n")
 
 
 def generate_questions(quiz_file, answer_file):
-    for question_number in range(QTD_OF_QUESTIONS):
-        states = list(states_and_capitals.keys())
-        random.shuffle(states)
+    states = list(states_and_capitals.keys())
+    random.shuffle(states)
 
-        question = "{} - What is the capital of {}?\n".format(question_number+1, states[question_number])
+    for question_number in range(QTD_OF_QUESTIONS):
+        question = f"{question_number+1} - What is the capital of {states[question_number]}?\n"
         quiz_file.write(question)
 
         generate_options(quiz_file, answer_file, states[question_number], question_number+1)
@@ -38,15 +38,15 @@ def generate_questions(quiz_file, answer_file):
 
 def create_files(files_number):
     try:
-        os.makedirs("quiz-{}".format(files_number))
+        os.makedirs(f"quiz-{files_number}")
     except FileExistsError:
         print("File exists")
 
-    quiz_file = open("./quiz-{}/questions.txt".format(files_number), "w")
-    answer_file = open("./quiz-{}/answers.txt".format(files_number), "w")
+    quiz_file = open(f"./quiz-{files_number}/questions.txt", "w")
+    answer_file = open(f"./quiz-{files_number}/answers.txt", "w")
 
-    quiz_file.write("Student:\n\nDate:\n\nPeriod:\n\n\n{}Geography Quiz (Form {})\n\n\n".format(' '*20, files_number))
-    answer_file.write("{} Answers (Form {})\n\n\n".format(' '*20, files_number))
+    quiz_file.write(f"Student:\n\nDate:\n\nPeriod:\n\n\n{' '*20}Geography Quiz (Form {files_number})\n\n\n")
+    answer_file.write(f"{' '*20} Answers (Form {files_number})\n\n\n")
     
     generate_questions(quiz_file, answer_file)
 
