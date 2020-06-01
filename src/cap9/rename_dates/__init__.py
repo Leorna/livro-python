@@ -6,7 +6,6 @@ import re
 import os
 import shutil
 import zipfile
-import os
 import time
 import random
 
