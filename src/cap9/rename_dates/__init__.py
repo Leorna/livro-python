@@ -16,8 +16,27 @@ import shutil
 # (.*?)$
 data_pattern = re.compile(r"""
     ^(.*?)
-    ((0|1)?\d)-
-    ((0|1|2|3)?\d)-
+    ((0|1)?\d)(-|/)
+    ((0|1|2|3)?\d)(-|/)
     ((19|20)?\d\d)
     (.*?)$
 """, re.VERBOSE)
+
+
+def rename_dates():
+    '''Renomeia arquivos com datas no estilo estadunidense para datas no estilo europeu'''
+    for file_name in os.listdir('./example_files'):
+        mo = data_pattern.match(file_name)
+        
+        # Ignora os arquivos que nao tenham uma data
+        if mo == None:
+            continue
+        
+        # Obtem as diferentes partes do nome do arquivo
+        before_part = mo.group(1)
+        month_part = mo.group(2)
+        day_part = mo.group(5)
+        year_part = mo.group(8)
+        after_part = mo.group(9)
+
+            
