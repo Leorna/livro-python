@@ -5,6 +5,10 @@
 import re
 import os
 import shutil
+import zipfile
+import os
+import time
+import random
 
 
 # regex que é o padrão de datas estadunidense
@@ -14,7 +18,7 @@ import shutil
 # ((0|1|2|3)?\d) para representar o dia, regex análoga a regex que representa o mês, Ex.: 31, 01, 1
 # ((19|20)?\d\d) representa o ano, digitos 19 e 20 são opcionais, Ex.: 2010, 10, 1989
 # (.*?)$
-data_pattern = re.compile(r"""
+date_pattern = re.compile(r"""
     ^(.*?)
     ((0|1)?\d)(-|/)
     ((0|1|2|3)?\d)(-|/)
@@ -23,10 +27,46 @@ data_pattern = re.compile(r"""
 """, re.VERBOSE)
 
 
+def create_example_files():
+    '''Cria arquivos com datas no padrão estadunidense'''
+    random.seed(a=None)
+
+    path = f'{os.getcwd()}/rename_dates'
+    os.chdir(path)
+
+    os.mkdir('example_files')
+    os.chdir('./example_files')
+
+    file = open('teste.txt', 'w')
+    file.write('hello')
+    file.close()
+
+    for i in range(10):
+        r_number = random.randint(0, 12)
+        zip_file = zipfile.ZipFile(f'spam{i}-{i+1}-{i+r_number}-20{10+i}.zip', 'w')
+        zip_file.write('teste.txt', compress_type=zipfile.ZIP_DEFLATED)
+
+    os.unlink('./teste.txt')
+
+
 def rename_dates():
     '''Renomeia arquivos com datas no estilo estadunidense para datas no estilo europeu'''
-    for file_name in os.listdir('./example_files'):
-        mo = data_pattern.match(file_name)
+    try:
+        create_example_files()
+    except:
+        if os.path.isdir('./example_files'):
+            print('Files already exist')
+            os.chdir('./example_files')
+        else:
+            raise Exception('Error unexpected')
+    else:
+        print('Files created')
+        time.sleep(2)
+    
+    print('\nRenaming files...\n')
+    
+    for file_name in os.listdir('.'):
+        mo = date_pattern.match(file_name)
         
         # Ignora os arquivos que nao tenham uma data
         if mo == None:
@@ -37,6 +77,14 @@ def rename_dates():
         month_part = mo.group(2)
         day_part = mo.group(5)
         year_part = mo.group(8)
-        after_part = mo.group(9)
+        after_part = mo.group(10)
 
-            
+        euro_file_name = f'{before_part}{day_part}-{month_part}-{year_part}{after_part}'
+        
+        abs_path = os.path.abspath('.')
+        file_name = os.path.join(abs_path, file_name)
+        euro_file_name = os.path.join(abs_path, euro_file_name)
+       
+        print(f'\n----{file_name} to {euro_file_name}----\n')
+        shutil.move(file_name, euro_file_name)
+        time.sleep(1)
