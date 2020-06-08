@@ -1,5 +1,4 @@
 import rename_dates as re_dates
-import sys
 
 
 def main():
