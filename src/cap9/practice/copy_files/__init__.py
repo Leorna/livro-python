@@ -25,11 +25,11 @@ def copy_files(path, destiny,  *ends_of_file):
     for file in os.listdir(path):
         if len(ends_of_file):
             for end_of_file in ends_of_file:
-                if file.endswith(end_of_file):
+                if file.endswith(end_of_file) and os.path.isfile(file):
                     print(f'Coping {file}')
                     shutil.copy(os.path.join(path, file), copied_folder_path)
                     time.sleep(2)
-        else:
+        elif os.path.isfile(file):
             print(f'Coping {file}')
             shutil.copy(os.path.join(path, file), copied_folder_path)
             time.sleep(2)
