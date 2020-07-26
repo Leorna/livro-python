@@ -33,8 +33,4 @@ def copy_files(path, destiny,  *ends_of_file):
             print(f'Coping {file}')
             shutil.copy(os.path.join(path, file), copied_folder_path)
             time.sleep(2)
-
-        
-    
-
-    
+   

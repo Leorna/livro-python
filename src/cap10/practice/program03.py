@@ -1,0 +1,1 @@
+assert False, 'Assert sempre será chamado'

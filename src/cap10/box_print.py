@@ -1,4 +1,4 @@
-def box_print(symbol, width, height):
+def box_print(symbol: str, width: int, height: int):
     if len(symbol) != 1:
         raise Exception('Symbol must be a single character string.')
     if width <= 2:
